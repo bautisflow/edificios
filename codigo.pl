@@ -13,7 +13,8 @@ basic_building(X) :- % N. Al menos un nivel y cada nivel una vivienda
     has_level_one_home(X).    % Si cada nivel tiene que tener al menos una vivienda no podrá haber listas vacias.
 
 
-building(X). % N basic building donde todos los niveles tienen el mismo número de viviendas.
+building(X) :- % N basic building donde todos los niveles tienen el mismo número de viviendas.
+    basic_building(X). % Igual puedo contar y sumar el primer nivel y comparar con el resto
 
 % Predicates for Peano representation
 
@@ -48,28 +49,46 @@ list_members(X,[Y|Ys]) :-
 	list_members(X,Ys).
 
 
-% Comprueba si los miembros de una lista son naturales
+% BASIC! Comprueba si los miembros de una lista son naturales
 % TEST: probar con los elementos de una lista
 is_list_members_nat([]).
 is_list_members_nat([X|Xs]) :-
     nat(X),
     is_list_members_nat(Xs).
 
-% Recorre cada lista del edificio para comprobar que todos los numeros de
+% BASIC! Recorre cada lista del edificio para comprobar que todos los numeros de
 % las mismas son naturales
 is_list_list_members_nat([]).
 is_list_list_members_nat([X|Xs]) :-
     is_list_members_nat(X),
     is_list_list_members_nat(Xs).
 
-% Recorre cada nivel del edificio para comprobar que al menos tiene una vivienda
+% BASIC! Recorre cada nivel del edificio para comprobar que al menos tiene una vivienda
 has_level_one_home([]).
 has_level_one_home([X|Xs]) :-
     list_has_one(X),
     has_level_one_home(Xs).
 
-% Comprueba que una lista tiene al menos un numero > 0
+% BASIC! Comprueba que una lista tiene al menos un numero > 0
 list_has_one([s(X)|_]).
 list_has_one([0|Xs]) :-
     list_has_one(Xs).
+    
+% NON-BASIC! Cuenta las viviendas de un nivel
+count_homes_level([],0).
+count_homes_level([s(X)|Xs],s(Y)) :-
+    count_homes_level(Xs,Y).
+
+% Add two natural numbers. NOT USED AT THE MOMENT
+add_nat(0,X,X).
+add_nat(s(X),Y,s(Z)) :-
+    add_nat(X,Y,Z).
+
+% Checks if two natural numbers are equal
+nat_eq(0,0).
+nat_eq(s(X),s(Y)) :-
+    nat_eq(X,Y).
+
+%all_levels_equal([X|Xs]) :-
+    
     
