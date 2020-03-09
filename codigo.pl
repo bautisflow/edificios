@@ -9,7 +9,8 @@ alumno_prode('Salinero', 'Bautista', 'Jaime', 'X150103').
 % Lo que tengo que hacer es 'deconstruir' la lista de listas
 basic_building(X) :- % N. Al menos un nivel y cada nivel una vivienda
         %list_members(Y,X),    % Será una lista (X) de listas (Ys). Los elementos de cada Y serán números naturales. 
-    is_list_list_members_nat(X).    % Si cada nivel tiene que tener al menos una vivienda no podrá haber listas vacias.
+    is_list_list_members_nat(X),
+    has_level_one_home(X).    % Si cada nivel tiene que tener al menos una vivienda no podrá haber listas vacias.
 
 
 building(X). % N basic building donde todos los niveles tienen el mismo número de viviendas.
@@ -23,6 +24,7 @@ nat(s(N)) :-
     nat(N).
 
 % Is it greater or equal to some number
+% ¿IS IT PL?
 nat_geq(0,0).
 nat_geq(N,0) :-
 	nat(N),
@@ -50,10 +52,24 @@ list_members(X,[Y|Ys]) :-
 % TEST: probar con los elementos de una lista
 is_list_members_nat([]).
 is_list_members_nat([X|Xs]) :-
-    nat(X),    
+    nat(X),
     is_list_members_nat(Xs).
 
+% Recorre cada lista del edificio para comprobar que todos los numeros de
+% las mismas son naturales
 is_list_list_members_nat([]).
 is_list_list_members_nat([X|Xs]) :-
     is_list_members_nat(X),
     is_list_list_members_nat(Xs).
+
+% Recorre cada nivel del edificio para comprobar que al menos tiene una vivienda
+has_level_one_home([]).
+has_level_one_home([X|Xs]) :-
+    list_has_one(X),
+    has_level_one_home(Xs).
+
+% Comprueba que una lista tiene al menos un numero > 0
+list_has_one([s(X)|_]).
+list_has_one([0|Xs]) :-
+    list_has_one(Xs).
+    
