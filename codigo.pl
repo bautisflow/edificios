@@ -75,10 +75,11 @@ list_has_one([0|Xs]) :-
     list_has_one(Xs).
     
 % NON-BASIC! Cuenta las viviendas de un nivel
-% TODO: NOT WORKIIIIING!!!!
 count_homes_level([],0).
-count_homes_level([s(X)|Xs],s(Y)) :-
+count_homes_level([s(0)|Xs],s(Y)) :-
     count_homes_level(Xs,Y).
+count_homes_level([s(X)|Xs],s(Y)) :-
+    count_homes_level([X|Xs],Y).
 
 % Add two natural numbers. NOT USED AT THE MOMENT
 add_nat(0,X,X).
@@ -95,9 +96,6 @@ all_levels_equal([X|Xs]) :-
         first_level_homes(Xs,Y). 
 
 first_level_homes([],_).
-%first_level_homes([X],Y) :-
-%    count_homes_level(X,Z),
-%    nat_eq(Y,Z).
 first_level_homes([X|Xs],Y) :-
     first_level_homes(Xs,Y),
     count_homes_level(X,Z),
