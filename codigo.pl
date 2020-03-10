@@ -14,7 +14,8 @@ basic_building(X) :- % N. Al menos un nivel y cada nivel una vivienda
 
 
 building(X) :- % N basic building donde todos los niveles tienen el mismo número de viviendas.
-    basic_building(X). % Igual puedo contar y sumar el primer nivel y comparar con el resto
+    basic_building(X), % Igual puedo contar y sumar el primer nivel y comparar con el resto
+    all_levels_equal(X).
 
 % Predicates for Peano representation
 
@@ -91,15 +92,14 @@ nat_eq(0,0).
 nat_eq(s(X),s(Y)) :-
     nat_eq(X,Y).
 
+% Comprueba si todos los niveles tienes las mismas viviendas
 all_levels_equal([X|Xs]) :-
         count_homes_level(X,Y),
         first_level_homes(Xs,Y). 
 
+% Cuenta cada nivel y lo compara con el resto de niveles
 first_level_homes([],_).
 first_level_homes([X|Xs],Y) :-
     first_level_homes(Xs,Y),
     count_homes_level(X,Z),
     nat_eq(Y,Z).
-    
-   
-    
