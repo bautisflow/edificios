@@ -81,13 +81,13 @@ count_homes_level([s(X)|Xs],s(Y)) :-
     count_homes_level([X|Xs],Y).
 
 % Add two natural numbers. NOT USED AT THE MOMENT
-add_nat(0,X,X).
-add_nat(s(X),Y,s(Z)) :-
-    add_nat(X,Y,Z).
+nat_add(0,X,X).
+nat_add(s(X),Y,s(Z)) :-
+    nat_add(X,Y,Z).
 
 % Checks if two natural numbers are equal
 nat_geq(0,0).
-nat_qeq(s(X),0) :-
+nat_geq(s(X),0) :-
     nat(X).
 nat_geq(s(X),s(Y)) :-
     nat_geq(X,Y).
@@ -154,11 +154,47 @@ lists_to_list(X,[X]) :-
     nat(X).
 
 % habitantes / viviendas -> total_people / list_length
-%average(X,A) :-
-    %total_people(X,H),
-    %list_length(X,V),
-    %nat_division(H,X,D),
-    %nat_module(H,X,R),
+average(X,A) :-
+    total_people(X,H),
+    list_length(X,V),
+    nat_gt(V,H), % Si las viviendas son mayor que los habitantes
+    round(s(0),H,A).
+average(X,A) :-
+    total_people(X,H),
+    list_length(X,V),
+    nat_geq(H,V), % Que los habitantes sean mayor que las viviendas
+    nat_mod(H,V,R), % Resto a R
+    nat_add(Hh,R,H), % A habitantes le quito el resto para una división justa
+    nat_prod(P,V,Hh), % Multiplicación usada como división. Que pasa si hay más viviendas que habitantes?
+    round(P,R,A).
+
+% Siguiendo el redondeo del IEEE 754 de 2008, se redondea al más cercano.
+% En el caso del .5 se redondea al par más cercano
+% De esta manera, en la mitad de los casos el redondeo será hacia el superior
+% y en la otra mitad hacia el inferior
+round(P,R,s(P)) :-
+    nat_prod(R,s(s(0)),Pp),
+    nat_gt(Pp,P).
+round(P,R,P) :-
+    nat_prod(R,s(s(0)),Pp),
+    nat_gt(P,Pp).
+round(P,R,s(P)) :-
+    nat_prod(R,s(s(0)),Pp),
+    nat_eq(Pp,P),
+    nat_even(P).
+round(P,R,P) :-
+    nat_prod(R,s(s(0)),Pp),
+    nat_eq(Pp,P),
+    nat_odd(P).
+
+nat_even(0).
+nat_even(s(s(X))) :-
+    nat_even(X).
+
+nat_odd(s(0)).
+nat_odd(s(s(X))) :-
+    nat_odd(X).
+    
     
 % X = dividendo; Y = divisor, C = cociente
 nat_division(_,0,_).
@@ -171,7 +207,19 @@ nat_gt(s(X),0) :-
 nat_gt(s(X),s(Y)) :-
     nat_gt(X,Y).
 
-%nat_prod
+% Modulo: resto de la division
+nat_mod(X,Y,X) :-
+    nat_gt(Y,X).
+nat_mod(X,Y,R) :-
+    nat_add(Z,Y,X),
+    nat_mod(Z,Y,R).
+
+
+% Si puedo prescindir de esto mejor
+nat_prod(0,_,0).
+nat_prod(s(N),M,P) :-
+    nat_prod(N,M,K),
+    nat_add(K,M,P).
 
 % Comprueba si dos listas son iguales. Devuelve yes or no
 % Seguro que se puede hacer más bonito y recursivo
