@@ -1,0 +1,32 @@
+list_append([],s(s(0)),s(0)).
+list_append([s(0)],s(s(0)),C).
+list_append([s(0),s(s(s(0)))],s(s(0)),C).
+list_append([s(0),s(s(s(0)))],[s(s(0))],C).
+
+sublevel_column([s(0),0,s(s(0))],s(s(0)), C).
+
+column([[s(0),s(s(s(0)))],[0,s(s(0))]],s(0),C).
+column([[s(0),s(s(s(0)))],[0,s(s(0))]],s(s(0)),C).
+column([[s(0),s(s(s(0))),0],[0,s(s(0)),s(s(s(s(s(0)))))],[s(0),s(0),s(0)]],s(s(0)),C).
+column_aux([[s(0),s(s(s(0))),0],[0,s(s(0)),s(s(s(s(s(0)))))],[s(0),s(0),s(0)]],s(s(0)),C).
+building([[s(0),s(s(s(0))),0],[0,s(s(0)),s(s(s(s(s(0)))))],[s(0),s(0),s(0)]]).
+column_aux([[s(0),s(s(s(0)))],[0,s(s(0))]],s(0),C).
+
+sublevel_column([s(0),s(s(s(0)))],s(0),C).
+sublevel_column([0,s(s(0))],s(0),C).
+
+
+% TODO
+building([[0,0,s(0)],[0,0,s(0)],[0,0,s(0)]]). -> No unifica :(
+% Migth be the 0 inside ARREGLADO
+
+
+[H|T] = [s(s(0))].
+[_|T] = [s(s(0))].
+
+columns_aux([[s(0),s(s(s(0)))],[0,s(s(0))]],s(s(0)),C).
+columns([[s(0),s(s(s(0)))],[0,s(s(0))]],C).
+
+total_people([[s(0),s(s(s(0)))],[0,s(s(0))]],C).
+total_people([[s(0),s(s(s(0))),0],[0,s(s(0)),s(s(s(s(s(0)))))],[s(0),s(0),s(0)]],C).
+count_homes_level([[s(0),s(s(s(0)))],[0,s(s(0))]],C).
