@@ -27,12 +27,9 @@ nat(s(N)) :-
 
 % Is it greater or equal to some number
 % ¿IS IT PL? No es PL, no se puede usar
-nat_geq(0,0).
-nat_geq(N,0) :-
-	nat(N),
-	N \= 0.
-nat_geq(s(N),s(M)) :-
-	nat_geq(N,M).
+nat_eq(0,0).
+nat_eq(s(N),s(M)) :-
+    nat_eq(N,M).
 
 % Predicates for List representation
 
@@ -89,9 +86,11 @@ add_nat(s(X),Y,s(Z)) :-
     add_nat(X,Y,Z).
 
 % Checks if two natural numbers are equal
-nat_eq(0,0).
-nat_eq(s(X),s(Y)) :-
-    nat_eq(X,Y).
+nat_geq(0,0).
+nat_qeq(s(X),0) :-
+    nat(X).
+nat_geq(s(X),s(Y)) :-
+    nat_geq(X,Y).
 
 % Comprueba si todos los niveles tienes las mismas viviendas
 all_levels_equal([X|Xs]) :-
@@ -154,8 +153,29 @@ lists_to_list([X|Xs],Y) :-
 lists_to_list(X,[X]) :-
     nat(X).
 
+% habitantes / viviendas -> total_people / list_length
+%average(X,A) :-
+    %total_people(X,H),
+    %list_length(X,V),
+    %nat_division(H,X,D),
+    %nat_module(H,X,R),
+    
+% X = dividendo; Y = divisor, C = cociente
+nat_division(_,0,_).
+nat_division(0,Y,0) :-
+    nat_gt(Y,0).
+%nat_division(X,Y,C) :-
+
+nat_gt(s(X),0) :-
+    nat(X).
+nat_gt(s(X),s(Y)) :-
+    nat_gt(X,Y).
+
+%nat_prod
 
 % Comprueba si dos listas son iguales. Devuelve yes or no
+% Seguro que se puede hacer más bonito y recursivo
+% ADEMÁS, HACE uso de nat_eq y no puedo usar el existente
 list_same_length(Ls,Lt) :-
     list_length(Ls, Ts),
     list_length(Lt, Tt),
