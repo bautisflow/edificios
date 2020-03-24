@@ -30,3 +30,8 @@ columns([[s(0),s(s(s(0)))],[0,s(s(0))]],C).
 total_people([[s(0),s(s(s(0)))],[0,s(s(0))]],C).
 total_people([[s(0),s(s(s(0))),0],[0,s(s(0)),s(s(s(s(s(0)))))],[s(0),s(0),s(0)]],C).
 count_homes_level([[s(0),s(s(s(0)))],[0,s(s(0))]],C).
+
+average([[s(0),s(s(s(0)))],[0,s(s(0))]],C).
+
+round(s(s(0)),s(0),C). -> 2
+round(s(0),s(s(0)),C). -> 2
