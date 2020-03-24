@@ -1,4 +1,23 @@
-:- module(_,_).
+:- module(_,_, [assertions]).
+
+:- doc(title, "Primera práctica - edificios").
+:- doc(author, "Jaime Bautista Salinero; 150103").
+:- doc(module, "Este módulo se representa un edificio de viviendas.
+
+Un edificio está representado por una lista, que a su vez contiene sublistas que
+representarán las distintas plantas del edificio. Los elementos de cada sublista
+serán las viviendas y su valor el número de habitantes para dicha vivienda.
+
+El número de habitantes estará representado por números en notación de Peano:
+@includedef{nat/1}
+
+@section{Generación de la documentación}
+
+Esta documentación ha sido generada automáticamente con la herramienta
+@href{http://ciao-lang.org/ciao/build/doc/lpdoc.html/}{@bf{lpdoc}}. Para generarla,
+desde una línea de comandos ubicada en el directorio donde se encuentra el fichero de código,
+se ha ejecutado:
+~$ lpdoc -t pdf codigo.pl").
 
 % AUTOR: Jaime Bautista Salinero - 53940280-J, 150103
 alumno_prode('Salinero', 'Bautista', 'Jaime', 'X150103').
