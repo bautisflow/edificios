@@ -142,6 +142,12 @@ total_people(X,T) :-
     lists_to_list(X,Y), % Aplana la lista
     count_homes_level(Y,T).
 
+% Devuelve el numero de habitantes en H y el numero de casas en V
+total_people_homes(X,H,V) :-
+    lists_to_list(X,Y), % Aplana la lista
+    count_homes_level(Y,H),
+    list_length(Y,V).
+
 
 % LISTA DE LISTAS A LISTA DE ELEMENTOS
 % Aplana una lista
@@ -154,15 +160,16 @@ lists_to_list(X,[X]) :-
     nat(X).
 
 % habitantes / viviendas -> total_people / list_length
+average(X,s(0)) :-
+    total_people_homes(X,H,V),
+    nat_eq(V,H). % Si las viviendas son mayor que los habitantes
 average(X,A) :-
-    total_people(X,H),
-    list_length(X,V),
+    total_people_homes(X,H,V),
     nat_gt(V,H), % Si las viviendas son mayor que los habitantes
     round(s(0),H,A).
 average(X,A) :-
-    total_people(X,H),
-    list_length(X,V),
-    nat_geq(H,V), % Que los habitantes sean mayor que las viviendas
+    total_people_homes(X,H,V),
+    nat_gt(H,V), % Que los habitantes sean mayor que las viviendas
     nat_mod(H,V,R), % Resto a R
     nat_add(Hh,R,H), % A habitantes le quito el resto para una división justa
     nat_prod(P,V,Hh), % Multiplicación usada como división. Que pasa si hay más viviendas que habitantes?
@@ -181,11 +188,11 @@ round(P,R,P) :-
 round(P,R,s(P)) :-
     nat_prod(R,s(s(0)),Pp),
     nat_eq(Pp,P),
-    nat_even(P).
+    nat_odd(P).
 round(P,R,P) :-
     nat_prod(R,s(s(0)),Pp),
     nat_eq(Pp,P),
-    nat_odd(P).
+    nat_even(P).
 
 nat_even(0).
 nat_even(s(s(X))) :-
@@ -217,9 +224,10 @@ nat_mod(X,Y,R) :-
 
 % Si puedo prescindir de esto mejor
 nat_prod(0,_,0).
-nat_prod(s(N),M,P) :-
-    nat_prod(N,M,K),
-    nat_add(K,M,P).
+%nat_prod(s(0),X,X).
+nat_prod(s(X),Y,Z) :-
+    nat_add(Y,T,Z),
+    nat_prod(X,Y,T).
 
 % Comprueba si dos listas son iguales. Devuelve yes or no
 % Seguro que se puede hacer más bonito y recursivo
