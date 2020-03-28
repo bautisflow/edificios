@@ -1,3 +1,91 @@
+% BASIC_BUILDING
+%% no
+basic_building([0,0]). # No tiene formato de edificio
+basic_building([s(0),0]). # No tiene formato de edificio
+basic_building([[0,0,0],[],[0,0,0]]). # No tiene al menos una vivienda por nivel
+%% yes
+basic_building([[0],[0]]). # Sin habitantes
+basic_building([[0,0],[0,0]]). # Sin habitantes
+basic_building([[0,0,0],[0,0,0],[0,0,0]]). # Sin habitantes
+basic_building([[s(0),0,0],[0,s(0),0],[0,0,s(0)]]). # Un habitante por nivel
+basic_building([[s(0),s(s(0)),0],[0,s(s(s(0))),0],[s(0),s(0),s(0)]]). # Varios habitantes por nivel
+basic_building([[s(0),s(s(0))],[0,s(s(s(0))),0],[s(0),s(0),s(0),0]]). # Distinto numero de viviendas
+
+% BUILDING
+%no
+building([[0,0],[0,0,0],[0,0,0]]). # Sin habitantes
+building([[s(0),s(s(0))],[0,s(s(s(0))),0],[s(0),s(0),s(0),0]]). # Distinto numero de viviendas
+%yes
+building([[0],[0]]). # Sin habitantes
+building([[0,0],[0,0]]). # Sin habitantes
+building([[0,0,0],[0,0,0],[0,0,0]]). # Sin habitantes
+building([[s(0),s(s(0)),0],[0,s(s(s(0))),0],[s(0),s(0),s(0)]]). # Varios habitantes por nivel
+building([[s(0),0,0],[0,s(0),0],[0,0,s(0)]]). # Un habitante por nivel
+
+% LEVEL
+%no
+level([s(0),0,s(s(s(0)))],s(s(s(0))),C). # No es un edificio
+level([[0,0],[0,0]],s(s(s(0))),C). # No existe la planta
+%yes
+level([[0],[0]],s(0),C). C = [0] # Sin habitantes
+level([[0,0],[0,0]],s(s(0)),C). C = [0,0] # Sin habitantes
+level([[0,0,0],[0,0,0],[0,0,0]],s(s(s(0))),C). C = [0,0,0] # Sin habitantes
+level([[s(0),s(s(0)),0],[0,s(s(s(0))),0],[s(0),s(0),s(0)]],s(0),C). C = [s(0),s(s(0)),0] # Varios habitantes por nivel
+level([[s(0),s(s(0)),0],[0,s(s(s(0))),0],[s(0),s(0),s(0)]],s(s(0)),C). C = [0,s(s(s(0))),0] # Varios habitantes por nivel
+level([[s(0),s(s(0)),0],[0,s(s(s(0))),0],[s(0),s(0),s(0)]],s(s(s(0))),C). C = [s(0),s(0),s(0)] # Varios habitantes por nivel
+
+% COLUMN
+%no
+column([s(0),0,s(s(s(0)))],s(s(s(0))),C). # No es un edificio
+%yes
+column([[0],[0]],s(0),C). C = [0,0] # Sin habitantes
+column([[0,0],[0,0]],s(s(s(0))),C). C = [] # No existe la columna
+column([[0,0,s(0)],[0,0]],s(s(s(0))),C). C = [s(0)]# No existe la columna
+column([[0,0],[0,0]],s(s(0)),C). C = [0,0] # Sin habitantes
+column([[0,0,0],[0,0,0],[0,0,0]],s(s(s(0))),C). C = [0,0,0] # Sin habitantes
+column([[s(0),s(s(0)),0],[0,s(s(s(0))),0],[s(0),s(0),s(0)]],s(0),C). C = [s(0),0,s(0)] # Varios habitantes por nivel
+column([[s(0),s(s(0)),0],[0,s(s(s(0))),0],[s(0),s(0),s(0)]],s(s(0)),C). C = [s(s(0)),s(s(s(0))),s(0)] # Varios habitantes por nivel
+column([[s(0),s(s(0)),0],[0,s(s(s(0))),0],[s(0),s(0),s(0)]],s(s(s(0))),C). C = [0,0,s(0)] # Varios habitantes por nivel
+
+%% COLUMNS % Falla, necesito pasarle a column como parámetro el valor más largo de viviendas
+%no
+columns([s(0),0,s(s(s(0)))],C). # No es un edificio
+%yes
+columns([[0],[0]],C). C = [[0,0]] # Sin habitantes
+columns([[0,0,s(0)],[0,0]],C). C = [[0,0],[0,0],[s(0)]] # No existe la columna
+columns([[0,0],[0,0]],C). C = [[0,0],[0,0]] # Sin habitantes
+columns([[0,0,0],[0,0,0],[0,0,0]],C). C = [[0,0,0],[0,0,0],[0,0,0]] # Sin habitantes
+columns([[s(0),s(s(0)),0],[0,s(s(s(0))),0],[s(0),s(0),s(0)]],C). C = [[s(0),0,s(0)],[s(s(0)),s(s(s(0))),s(0)],[0,0,s(0)]]# Varios habitantes por nivel
+columns([[s(0),0,s(s(s(0))),0],[0,s(s(0)),s(s(s(s(s(0)))))],[s(0),s(0),s(0),0,0]],C). C = [[s(0),0,s(0)],[0,s(s(0)),s(0)],[s(s(s(0))),s(s(s(s(s(0))))),s(0)],[0,0],[0]]
+
+%% TOTAL PEOPLE
+%no
+total_people([s(0),0,s(s(s(0)))],C). # No es un edificio
+%yes
+total_people([[0],[0]],C). C = 0 # Sin habitantes
+total_people([[0,0,s(0)],[0,0]],C). C = 0 # No existe la columna
+total_people([[0,0],[0,0]],C). C = 0 # Sin habitantes
+total_people([[0,0,0],[0,0,0],[0,0,0]],C). C = 0 # Sin habitantes
+total_people([[s(0),s(s(s(0)))],[0,s(s(0))]],C). C = s(s(s(s(s(s(0))))))
+total_people([[s(0),s(s(0)),0],[0,s(s(s(0))),0],[s(0),s(0),s(0)]],C). C = s(s(s(s(s(s(s(s(s(0)))))))))  # Varios habitantes por nivel
+total_people([[s(0),s(s(s(0))),0],[0,s(s(0)),s(s(s(s(s(0)))))],[s(0),s(0),s(0)]],C). C = s(s(s(s(s(s(s(s(s(s(s(s(s(s(0))))))))))))))
+total_people([[s(0),0,s(s(s(0))),0],[0,s(s(0)),s(s(s(s(s(0)))))],[s(0),s(0),s(0),0,0]],C). C = s(s(s(s(s(s(s(s(s(s(s(s(s(s(0))))))))))))))
+
+
+%no
+average([s(0),0,s(s(s(0)))],C). # No es un edificio
+%yes
+average([[0],[0]],C). C = 0 # Sin habitantes
+average([[0,0,s(0)],[0,0]],C). C = 0 # No existe la columna
+average([[0,0],[0,0]],C). C = 0 # Sin habitantes
+average([[0,0,0],[0,0,0],[0,0,0]],C). C = 0 # Sin habitantes
+average([[s(0),s(0),s(0)],[0,0]],C). C = s(0)
+average([[s(0),s(s(s(0)))],[0,s(s(0))]],C). C = s(s(0))
+average([[s(0),s(s(0)),0],[0,s(s(s(0))),0],[s(0),s(0),s(0)]],C). C = s(0) # Varios habitantes por nivel
+average([[s(0),s(s(s(0))),0],[0,s(s(0)),s(s(s(s(s(0)))))],[s(0),s(0),s(0)]],C). C = C = s(s(0))
+average([[s(0),0,s(s(s(0))),0],[0,s(s(0)),s(s(s(s(s(0)))))],[s(0),s(0),s(0),0,0]],C). C = C = s(s(0))
+
+
 list_append([],s(s(0)),s(0)).
 list_append([s(0)],s(s(0)),C).
 list_append([s(0),s(s(s(0)))],s(s(0)),C).
@@ -27,11 +115,8 @@ building([[0,0,s(0)],[0,0,s(0)],[0,0,s(0)]]). -> No unifica :(
 columns_aux([[s(0),s(s(s(0)))],[0,s(s(0))]],s(s(0)),C).
 columns([[s(0),s(s(s(0)))],[0,s(s(0))]],C).
 
-total_people([[s(0),s(s(s(0)))],[0,s(s(0))]],C).
-total_people([[s(0),s(s(s(0))),0],[0,s(s(0)),s(s(s(s(s(0)))))],[s(0),s(0),s(0)]],C).
 count_homes_level([[s(0),s(s(s(0)))],[0,s(s(0))]],C).
 
-average([[s(0),s(s(s(0)))],[0,s(s(0))]],C).
 
 round(s(s(0)),s(0),C). -> 2
 round(s(0),s(s(0)),C). -> 2

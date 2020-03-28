@@ -13,4 +13,4 @@ The program (ciao) can be run with: ``` ciao ```
 
 - Query two things at the same time: ``` ?- query1(X), query2(X). ```
 
-
+- To generate documentation ``` lpdoc -t pdf codigo.pl ```
